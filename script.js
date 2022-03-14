@@ -2,6 +2,7 @@ var alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
 var words = ['abandon', 'ability', 'able', 'abortion', 'about', 'above', 'abroad', 'absence', 'absolute', 'absorb', 'bill', 'billion', 'bag', 'approximately'];
 var chosenLetter = "";
 var word = words[Math.floor(Math.random() * words.length)];
+word = word.toUpperCase();
 
 document.addEventListener('DOMContentLoaded', function() {
     window.onload = function() {
@@ -16,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         for (let i = 0; i < word.length; i++) {
             var input = document.createElement("input");
+            input.readOnly = true;
             document.getElementById("inputFields").appendChild(input);
         }
     }
@@ -24,14 +26,14 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener("click", (e) => {
     let element = e.target;
     if (element.tagName == "BUTTON") {
+        element.style.backgroundColor = "black";
+        element.style.setProperty("text-decoration", "line-through");
         chosenLetter = `${element.innerText}`;
-        words = Array.from(word);
-        for (let i = 0; i < words.length; i++) {
-            if (words[i] == chosenLetter) {
-                alert("x3");
+        arrayWord = Array.from(word);
+        for (let i = 0; i < arrayWord.length; i++) {
+            if (arrayWord[i] == chosenLetter) {
+                document.querySelector("#inputFields input:nth-child(" + (i + 1) + ")").value = arrayWord[i];
             }
         }
-    } else {
-
-    }
+    } else {}
 })
