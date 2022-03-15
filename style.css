@@ -9,16 +9,138 @@ body h1 {
 }
 body .main {
   display: flex;
+  width: 100%;
+  /* Hangman figur */
 }
-body .main img {
-  margin-left: 2rem;
-  width: 60%;
+body .main .hangmandraw {
+  background-color: #ffffff87;
+  height: 324px;
+  width: 17%;
+  /* First fail */
+  /* Second fail */
+  /* Third fail */
+  /* Forth fail */
+  /* Fifth fail */
+}
+body .main .hangmandraw .thedraw {
+  width: 60px;
+  height: 280px;
+  border-bottom: 4px solid #222;
+  position: relative;
+  margin: auto;
+  left: -60px;
+  display: none;
+}
+body .main .hangmandraw .thestand {
+  content: "";
+  position: absolute;
+  width: 4px;
+  background-color: #222;
+  height: 100%;
+  left: 50%;
+  margin-left: -2px;
+  display: none;
+}
+body .main .hangmandraw .thehang {
+  display: none;
+}
+body .main .hangmandraw .thehang:before {
+  content: "";
+  position: absolute;
+  height: 4px;
+  background-color: #222;
+  width: 100px;
+  left: 30px;
+  top: 15px;
+}
+body .main .hangmandraw .thehang:after {
+  content: "";
+  position: absolute;
+  width: 4px;
+  height: 30px;
+  background-color: #222;
+  left: 130px;
+  top: 15px;
+}
+body .main .hangmandraw .therope {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  position: absolute;
+  left: 95px;
+  top: 45px;
+  border: 4px dashed #222;
+  display: none;
+}
+body .main .hangmandraw .theman {
+  /* Sixth fail */
+  /* Seventh fail */
+  /* Eight fail */
+}
+body .main .hangmandraw .theman .head {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 4px solid #222;
+  position: absolute;
+  left: 105px;
+  top: 55px;
+  display: none;
+}
+body .main .hangmandraw .theman .body {
+  position: absolute;
+  background-color: #222;
+  width: 4px;
+  height: 110px;
+  top: 102px;
+  left: 130px;
+  display: none;
+}
+body .main .hangmandraw .theman .hands {
+  display: none;
+}
+body .main .hangmandraw .theman .hands:before {
+  left: 85px;
+  transform: rotate(30deg);
+}
+body .main .hangmandraw .theman .hands:after {
+  left: 130px;
+  transform: rotate(-30deg);
+}
+body .main .hangmandraw .theman .hands:before, body .main .hangmandraw .theman .hands:after {
+  content: "";
+  width: 50px;
+  position: absolute;
+  height: 4px;
+  background-color: #222;
+  top: 140px;
+}
+body .main .hangmandraw .theman .legs {
+  display: none;
+}
+body .main .hangmandraw .theman .legs:before {
+  left: 85px;
+  transform: rotate(-30deg);
+}
+body .main .hangmandraw .theman .legs:after {
+  left: 130px;
+  transform: rotate(30deg);
+}
+body .main .hangmandraw .theman .legs:after, body .main .hangmandraw .theman .legs:before {
+  content: "";
+  width: 50px;
+  position: absolute;
+  height: 4px;
+  background-color: #222;
+  top: 220px;
 }
 body .main #wordFields {
   width: 50%;
   height: 60vh;
   display: block;
   text-align: center;
+  margin-left: 20rem;
+  margin-right: 2rem;
 }
 body .main #wordFields #inputFields {
   width: 100%;
@@ -83,7 +205,7 @@ body .modal .modal-content {
   margin: auto;
   padding: 0;
   border: 1px solid #888;
-  width: 80%;
+  width: 30%;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   -webkit-animation-name: animatetop;
   -webkit-animation-duration: 0.4s;
@@ -94,6 +216,7 @@ body .modal .modal-content .modal-header {
   padding: 2px 16px;
   background-color: #5cb85c;
   color: white;
+  text-align: center;
   /* The Close Button */
 }
 body .modal .modal-content .modal-header .close {
@@ -107,13 +230,9 @@ body .modal .modal-content .modal-header .close:hover, body .modal .modal-conten
   text-decoration: none;
   cursor: pointer;
 }
-body .modal .modal-content .modal-body {
-  padding: 2px 16px;
-}
-body .modal .modal-content .modal-footer {
-  padding: 2px 16px;
-  background-color: #5cb85c;
-  color: white;
+body .modal .modal-content .modal-header img {
+  width: 100%;
+  filter: alpha(Opacity=90);
 }
 
 /* Add Animation */
@@ -136,4 +255,35 @@ body .modal .modal-content .modal-footer {
     top: 0;
     opacity: 1;
   }
+}
+.hangmandraw.wrong-1 .thedraw {
+  display: block;
+}
+
+.hangmandraw.wrong-2 .thestand {
+  display: block;
+}
+
+.hangmandraw.wrong-3 .thehang {
+  display: block;
+}
+
+.hangmandraw.wrong-4 .therope {
+  display: block;
+}
+
+.hangmandraw.wrong-5 .head {
+  display: block;
+}
+
+.hangmandraw.wrong-6 .body {
+  display: block;
+}
+
+.hangmandraw.wrong-7 .hands {
+  display: block;
+}
+
+.hangmandraw.wrong-8 .legs {
+  display: block;
 }/*# sourceMappingURL=style.css.map */

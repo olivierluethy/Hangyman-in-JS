@@ -6,40 +6,57 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="images/favicon.ico">
     <title>Hangyman</title>
 </head>
 
 <body>
     <h1>Hangyman!</h1>
     <div class="main">
-        <div class="img">
-            <img src="images/hangyman.png" alt="">
+        <!-- Hangman-Figur -->
+        <div class="hangmandraw">
+            <div class="thedraw">
+                <div class="thestand"></div>
+                <div class="thehang"></div>
+                <div class="therope"></div>
+                <div class="theman">
+                    <div class="head"></div>
+                    <div class="body"></div>
+                    <div class="hands"></div>
+                    <div class="legs"></div>
+                </div>
+            </div>
         </div>
-
         <div id="wordFields">
             <div id="inputFields"></div>
             <div id="alphabeticButtons"></div>
         </div>
     </div>
 
-    <!-- The Modal -->
-    <div id="myModal" class="modal">
-
+    <!-- Modal when you won -->
+    <div id="winningModal" class="modal">
         <!-- Modal content -->
         <div class="modal-content">
             <div class="modal-header">
                 <span class="close">&times;</span>
-                <h2>Congratulations! You have won!</h2>
-            </div>
-            <div class="modal-body">
-                <p id="word"></p>
-            </div>
-            <div class="modal-footer">
-                <img src="images/hangyman.png" alt="">
+                <h2 id="word"></h2>
+                <img src="images/you_have_won.png" alt="">
             </div>
         </div>
-
     </div>
+
+    <!-- Modal when you lost -->
+    <div id="lostModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2 id="word"></h2>
+                <img src="images/you_have_lost.png" alt="">
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 
