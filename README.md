@@ -14,6 +14,9 @@ https://stackoverflow.com/questions/9375445/javascript-strikethrough
 Issue 4: How do I disable all input buttons without using jQuery?<br>
 https://stackoverflow.com/questions/1202087/how-do-i-disable-all-input-buttons-without-using-jquery
 
+Issue 5: Array.prototype.includes() - Check if array contains a specific text
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes
+
 ## Quick Information!
 The image of the body from the left side was taken from there<br>
 https://codepen.io/worodhazam/pen/XWzxONq
