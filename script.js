@@ -7,7 +7,8 @@ var chosenLetter = "";
 /* Picks a random word from the word-array */
 var word = words[Math.floor(Math.random() * words.length)];
 /* Is used for the modal to show, what the hidden word was */
-document.getElementById("word").innerHTML = "The word was " + word;
+document.getElementById("word1").innerHTML = "The word was " + word;
+document.getElementById("word2").innerHTML = "The word was " + word;
 /* Turn picked word from string to array */
 arrayWord = Array.from(word);
 /* Get length of random word-array */
@@ -50,6 +51,8 @@ document.addEventListener("click", (e) => {
             /* If yes, button gets some new properties */
             element.style.backgroundColor = "black";
             element.style.setProperty("text-decoration", "line-through");
+            element.disabled = true;
+            element.style.setProperty("cursor", "context-menu");
             /* Get text from button */
             chosenLetter = `${element.innerText}`;
             /* Check if the array contains an element that is the same as the letter of the variable */
