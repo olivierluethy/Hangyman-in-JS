@@ -3,6 +3,9 @@ var words = ['abandon', 'ability', 'able', 'abortion', 'about', 'above', 'abroad
 var chosenLetter = "";
 var word = words[Math.floor(Math.random() * words.length)];
 word = word.toUpperCase();
+document.getElementById("word").innerHTML = "The word was " + word;
+arrayWord = Array.from(word);
+var wordLength = arrayWord.length;
 
 document.addEventListener('DOMContentLoaded', function() {
     window.onload = function() {
@@ -29,11 +32,36 @@ document.addEventListener("click", (e) => {
         element.style.backgroundColor = "black";
         element.style.setProperty("text-decoration", "line-through");
         chosenLetter = `${element.innerText}`;
-        arrayWord = Array.from(word);
         for (let i = 0; i < arrayWord.length; i++) {
             if (arrayWord[i] == chosenLetter) {
                 document.querySelector("#inputFields input:nth-child(" + (i + 1) + ")").value = arrayWord[i];
+                wordLength--;
+
+                if (wordLength == 0) {
+                    modal.style.display = "block";
+                }
             }
         }
-    } else {}
+    }
 })
+
+// Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
