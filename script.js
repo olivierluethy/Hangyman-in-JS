@@ -1,5 +1,5 @@
 var alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-var words = ['abandon', 'ability', 'able', 'abortion', 'about', 'above', 'abroad', 'absence', 'absolute', 'absorb', 'bill', 'billion', 'bag', 'approximately'];
+let words = ["ABART", "AFFIG", "AFTER", "BADEN", "BAMBI", "PEDAL", "PERLE", "PFAHL", "PFAND", "PFEIL", "PFERD", "PFLUG", "PFOTE", "PFUND", "PHASE", "PIANO", "PILLE", "PILOT", "PIRAT", "PISTE", "PIXEL", "PLAGE", "PLATZ", "POKAL", "POKER", "POREN", "PREIS", "PRINZ", "PUDER", "PUMPE", "PUPPE", "PUSTE", "QUALM", "QUARZ", "RACHE", "RADAU", "RADIO", "RAMPE", "RANKE", "RATTE", "RAUCH", "RAUPE", "RECHT", "REGAL", "REGEL", "REGEN"];
 var chosenLetter = "";
 var word = words[Math.floor(Math.random() * words.length)];
 word = word.toUpperCase();
