@@ -256,34 +256,86 @@ body .modal .modal-content .modal-header img {
     opacity: 1;
   }
 }
-.hangmandraw.wrong-1 .thedraw {
-  display: block;
+@media screen and (max-width: 1080px) {
+  body h1 {
+    text-align: center;
+  }
+  body .main {
+    display: block;
+  }
+  body .main .hangmandraw {
+    margin-right: auto;
+    margin-left: auto;
+  }
 }
-
-.hangmandraw.wrong-2 .thestand {
-  display: block;
+@media screen and (max-width: 666px) {
+  body .main #wordFields {
+    width: 100%;
+    margin-left: 0rem;
+    margin-right: 0rem;
+  }
 }
-
-.hangmandraw.wrong-3 .thehang {
-  display: block;
-}
-
-.hangmandraw.wrong-4 .therope {
-  display: block;
-}
-
-.hangmandraw.wrong-5 .head {
-  display: block;
-}
-
-.hangmandraw.wrong-6 .body {
-  display: block;
-}
-
-.hangmandraw.wrong-7 .hands {
-  display: block;
-}
-
-.hangmandraw.wrong-8 .legs {
-  display: block;
+@media screen and (max-width: 390px) {
+  body .main .hangmandraw {
+    height: 158px;
+  }
+  body .main .hangmandraw .thedraw {
+    height: 100px;
+  }
+  body .main .hangmandraw .thehang:before {
+    height: 2px;
+    width: 50px;
+  }
+  body .main .hangmandraw .thehang:after {
+    width: 4px;
+    height: 10px;
+    left: 78px;
+    top: 15px;
+  }
+  body .main .hangmandraw .therope {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    left: 74px;
+    top: 33px;
+  }
+  body .main .hangmandraw .theman .head {
+    width: 20px;
+    height: 20px;
+    left: 66px;
+    top: 25px;
+  }
+  body .main .hangmandraw .theman .body {
+    position: absolute;
+    background-color: #222;
+    width: 4px;
+    height: 8px;
+    top: 52px;
+    left: 78px;
+  }
+  body .main .hangmandraw .theman .legs {
+    text-align: center;
+  }
+  body .main .hangmandraw .theman .legs:before {
+    width: 28px;
+    height: 4px;
+    top: 94px;
+  }
+  body .main .hangmandraw .theman .legs:after {
+    width: 28px;
+    height: 4px;
+    top: 94px;
+  }
+  body .main #wordFields #inputFields {
+    width: 100%;
+    height: 8vh;
+  }
+  body .main #wordFields #inputFields input {
+    height: 25px;
+    width: 25px;
+    margin-right: 2rem;
+    margin-bottom: 2rem;
+    font-size: 25px;
+    text-align: center;
+  }
 }/*# sourceMappingURL=style.css.map */
