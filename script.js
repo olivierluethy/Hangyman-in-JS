@@ -70,6 +70,7 @@ document.addEventListener("click", (e) => {
                 /* Check if user already guessed the entire word */
                 if (wordLength == 0) {
                     winningmodal.style.display = "block";
+                    document.getElementById("playagain").style.display = "block";
                 }
                 lucky = true;
             }
@@ -104,6 +105,7 @@ document.addEventListener("click", (e) => {
                     document.querySelector(".theman .legs").style.display = "block";
                     lostmodal.style.display = "block";
                     lost = true;
+                    document.getElementById("playagain").style.display = "block";
                 }
             }
         }
@@ -141,7 +143,7 @@ span.onclick = function() {
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
     if (event.target == winningmodal) {
-        winningmodalmodal.style.display = "none";
+        winningmodal.style.display = "none";
     }
 }
 
@@ -164,3 +166,8 @@ window.onclick = function(event) {
         lostmodal.style.display = "none";
     }
 }
+
+/* Restart Game */
+document.getElementById("playagain").addEventListener("click", function() {
+    window.location = window.location;
+})
