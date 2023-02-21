@@ -16,32 +16,38 @@ var word = "";
 /* Stores the chosen letter from the user */
 var chosenLetter = "";
 
+/* Store the world length of the word from API */
 var wordLength = 0;
 
+// Fetch a random word from the API
 fetch("https://random-word-api.herokuapp.com/word?number=1")
+  // When the response is received, parse it as JSON
   .then(response => response.json())
+  // When the data is parsed, execute the following code
   .then(data => {
+    // Set the word variable to the first word in the array returned by the API
     word = data[0];
-    // console.log(word);
-    // console.log(word.length);
 
     /* Is used for the modal to show, what the hidden word was */
+    // Set the text of two elements with IDs "word1" and "word2" to display the generated word
     document.getElementById("word1").innerHTML = "The word was " + word;
     document.getElementById("word2").innerHTML = "The word was " + word;
 
     /* Turn picked word from string to array */
+    // Convert the generated word from a string to an array of individual characters
     arrayWord = Array.from(word);
 
     /* Generates the number of input field == number of letters in generated word */
+    // Create an input field for each letter in the generated word, and add it to the "inputFields" element
     for (let i = 0; i < word.length; i++) {
         var input = document.createElement("input");
         input.readOnly = true;
         document.getElementById("inputFields").appendChild(input);
     }
-    // Get length of random word-array */
+    // Set the wordLength variable to the number of letters in the generated word
     wordLength = arrayWord.length;
-    // console.log("Original WOrd length: " + arrayWord.length);
   })
+  // If there is an error in the fetch request, log the error to the console
   .catch(error => console.error(error));
   
 
