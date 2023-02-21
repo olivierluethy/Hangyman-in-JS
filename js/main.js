@@ -1,29 +1,53 @@
+var arrayWord = "";
 /* Array with letters from A-Z for Buttons */
 var alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-/* The array with words, where one word will be taken for the game */
-let words = ["ABART", "AFFIG", "AFTER", "BADEN", "BAMBI", "PEDAL", "PERLE", "PFAHL", "PFAND", "PFEIL", "PFERD", "PFLUG", "PFOTE", "PFUND", "PHASE", "PIANO", "PILLE", "PILOT", "PIRAT", "PISTE", "PIXEL", "PLAGE", "PLATZ", "POKAL", "POKER", "POREN", "PREIS", "PRINZ", "PUDER", "PUMPE", "PUPPE", "PUSTE", "QUALM", "QUARZ", "RACHE", "RADAU", "RADIO", "RAMPE", "RANKE", "RATTE", "RAUCH", "RAUPE", "RECHT", "REGAL", "REGEL", "REGEN"];
-/* Stores the chosen letter from the user */
-var chosenLetter = "";
-/* Picks a random word from the word-array */
-var word = words[Math.floor(Math.random() * words.length)];
-/* Is used for the modal to show, what the hidden word was */
-document.getElementById("word1").innerHTML = "The word was " + word;
-document.getElementById("word2").innerHTML = "The word was " + word;
-/* Turn picked word from string to array */
-arrayWord = Array.from(word);
-/* Get length of random word-array */
-var wordLength = arrayWord.length;
+
 /* To get the number of used attemps */
 var attemps = 0;
+
 /* To determine if user guessed correctly */
 var lucky = false;
+
 /* To check if user has lost the game or not */
 var lost = false;
+
+var word = "";
+
+/* Stores the chosen letter from the user */
+var chosenLetter = "";
+
+var wordLength = 0;
+
+fetch("https://random-word-api.herokuapp.com/word?number=1")
+  .then(response => response.json())
+  .then(data => {
+    word = data[0];
+    // console.log(word);
+    // console.log(word.length);
+
+    /* Is used for the modal to show, what the hidden word was */
+    document.getElementById("word1").innerHTML = "The word was " + word;
+    document.getElementById("word2").innerHTML = "The word was " + word;
+
+    /* Turn picked word from string to array */
+    arrayWord = Array.from(word);
+
+    /* Generates the number of input field == number of letters in generated word */
+    for (let i = 0; i < word.length; i++) {
+        var input = document.createElement("input");
+        input.readOnly = true;
+        document.getElementById("inputFields").appendChild(input);
+    }
+    // Get length of random word-array */
+    wordLength = arrayWord.length;
+    // console.log("Original WOrd length: " + arrayWord.length);
+  })
+  .catch(error => console.error(error));
+  
 
 /* When the website has been loaded */
 document.addEventListener('DOMContentLoaded', function() {
     window.onload = function() {
-
         // Generates all the buttons
         for (i = 0; i < alphabet.length; i++) {
             var button = document.createElement("button");
@@ -31,15 +55,9 @@ document.addEventListener('DOMContentLoaded', function() {
             button.appendChild(textnode);
             document.getElementById("alphabeticButtons").appendChild(button);
         }
-
-        /* Generates the number of input field == number of letters in generated word */
-        for (let i = 0; i < word.length; i++) {
-            var input = document.createElement("input");
-            input.readOnly = true;
-            document.getElementById("inputFields").appendChild(input);
-        }
     }
 });
+
 
 /* If something has been clicked */
 document.addEventListener("click", (e) => {
@@ -56,16 +74,23 @@ document.addEventListener("click", (e) => {
             /* Get text from button */
             chosenLetter = `${element.innerText}`;
             /* Check if the array contains an element that is the same as the letter of the variable */
+            // console.log("Array word: " + arrayWord);
+            // console.log("Choosen lettter: " + chosenLetter);
+            chosenLetter = chosenLetter.toLowerCase();
+            // console.log("Word Length: " + wordLength);
             if (arrayWord.includes(chosenLetter)) {
                 /* If it does, determine the index of it */
                 for (let i = 0; i < arrayWord.length; i++) {
                     if (arrayWord[i] == chosenLetter) {
                         /* If the value from index is the same a the letter from variable, */
                         /* set the value from input field by using nth-child to fill the correct input field */
+                        document.querySelector("#inputFields input:nth-child(" + (i + 1) + ")").style.display = "inline-block";
                         document.querySelector("#inputFields input:nth-child(" + (i + 1) + ")").value = arrayWord[i];
+
+                        wordLength--;
+                        // console.log("Word Length: " + wordLength);
                     }
                 }
-                wordLength--;
 
                 /* Check if user already guessed the entire word */
                 if (wordLength == 0) {
@@ -82,7 +107,7 @@ document.addEventListener("click", (e) => {
             /* Check if user has guessed the wrong letter */
             if (lucky == false) {
                 attemps++;
-                console.log(word);
+                // console.log(word);
 
                 /* Is reponsible for the hangman image on the left of the game */
                 if (attemps == 1) {
