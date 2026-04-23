@@ -1,64 +1,198 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
+    <title>Hangyman — Guess the Word</title>
     <link rel="shortcut icon" href="images/favicon.ico">
-    <title>Hangyman</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            50:  '#eef2ff',
+                            400: '#818cf8',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                        },
+                    },
+                    boxShadow: {
+                        glow: '0 0 40px -10px rgba(99, 102, 241, 0.6)',
+                    },
+                },
+            },
+        };
+    </script>
+    <style>
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes popIn  { 0% { transform: scale(0.4); opacity: 0; } 60% { transform: scale(1.15); opacity: 1; } 100% { transform: scale(1); } }
+        @keyframes shake  { 10%,90%{transform:translateX(-1px);} 20%,80%{transform:translateX(2px);} 30%,50%,70%{transform:translateX(-5px);} 40%,60%{transform:translateX(5px);} }
+        @keyframes pulseBorder { 0%,100%{ box-shadow: 0 0 0 0 rgba(244,63,94,0.5); } 50%{ box-shadow: 0 0 0 6px rgba(244,63,94,0); } }
+
+        .letter-reveal { animation: popIn .35s cubic-bezier(.34,1.56,.64,1) both; }
+        .shake         { animation: shake .45s both; }
+        .fade-in       { animation: fadeIn .35s ease-out both; }
+
+        .hangman-part {
+            stroke-dasharray: 200;
+            stroke-dashoffset: 200;
+            transition: stroke-dashoffset .55s ease-out;
+        }
+        .hangman-part.show { stroke-dashoffset: 0; }
+
+        .key-btn {
+            transition: transform .12s ease, background-color .2s ease, color .2s ease, border-color .2s ease;
+        }
+        .key-btn:not(:disabled):hover  { transform: translateY(-2px); }
+        .key-btn:not(:disabled):active { transform: translateY(0); }
+
+        /* Minimal custom scrollbar for dark theme */
+        ::selection { background: rgba(99, 102, 241, 0.35); }
+        body { -webkit-font-smoothing: antialiased; }
+
+        .attempts-danger { animation: pulseBorder 1.4s infinite; }
+    </style>
 </head>
 
-<body>
-    <h1>Hangyman!</h1>
-    <div class="main">
-        <!-- Hangman-Figur -->
-        <div class="hangmandraw">
-            <div class="thedraw">
-                <div class="thestand"></div>
-                <div class="thehang"></div>
-                <div class="therope"></div>
-                <div class="theman">
-                    <div class="head"></div>
-                    <div class="body"></div>
-                    <div class="hands"></div>
-                    <div class="legs"></div>
+<body class="min-h-screen bg-slate-950 text-slate-100 font-sans antialiased overflow-x-hidden">
+    <!-- Decorative background -->
+    <div aria-hidden="true" class="pointer-events-none fixed inset-0 -z-10">
+        <div class="absolute -top-40 -left-40 w-[32rem] h-[32rem] bg-brand-600/20 rounded-full blur-3xl"></div>
+        <div class="absolute top-1/2 -right-40 w-[32rem] h-[32rem] bg-fuchsia-600/10 rounded-full blur-3xl"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(99,102,241,0.08),transparent_60%)]"></div>
+    </div>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+        <!-- Header -->
+        <header class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
+            <div>
+                <div class="flex items-center gap-3">
+                    <span class="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-gradient-to-br from-brand-500 to-fuchsia-500 shadow-glow">
+                        <svg viewBox="0 0 24 24" class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 21V5a2 2 0 0 1 2-2h9" />
+                            <path d="M15 3v4h4" />
+                            <circle cx="15.5" cy="12" r="2.5" />
+                            <path d="M15.5 14.5V20" />
+                            <path d="M13 17h5" />
+                        </svg>
+                    </span>
+                    <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
+                        Hangyman
+                    </h1>
+                </div>
+                <p class="text-slate-400 mt-1 text-sm sm:text-base">Guess the hidden word before the drawing completes.</p>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <div id="statusBadge" class="px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-slate-800/60 border border-slate-700 text-slate-300">
+                    Loading…
+                </div>
+                <button id="newGameBtn" type="button"
+                    class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-sm font-medium transition">
+                    <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 12a9 9 0 1 0 3-6.7" /><path d="M3 4v5h5" />
+                    </svg>
+                    New Game
+                </button>
+            </div>
+        </header>
+
+        <!-- Game grid -->
+        <section class="grid lg:grid-cols-5 gap-6">
+            <!-- Hangman drawing card -->
+            <div class="lg:col-span-2 rounded-2xl bg-slate-900/60 backdrop-blur border border-slate-800 p-6 flex flex-col">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-400">The Gallows</h2>
+                    <div id="attemptsBadge" class="text-xs font-medium px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                        <span id="attemptsLeft">6</span> left
+                    </div>
+                </div>
+
+                <div class="flex-1 flex items-center justify-center">
+                    <svg id="hangmanSvg" viewBox="0 0 220 260" class="w-full max-w-xs" fill="none" stroke="#e2e8f0" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+                        <!-- Gallows (always visible) -->
+                        <line x1="20"  y1="240" x2="180" y2="240" />
+                        <line x1="50"  y1="240" x2="50"  y2="20"  />
+                        <line x1="50"  y1="20"  x2="150" y2="20"  />
+                        <line x1="150" y1="20"  x2="150" y2="50"  />
+
+                        <!-- Body parts (revealed on wrong guesses) -->
+                        <circle class="hangman-part" data-part="0" cx="150" cy="70"  r="20" />
+                        <line   class="hangman-part" data-part="1" x1="150" y1="90"  x2="150" y2="160" />
+                        <line   class="hangman-part" data-part="2" x1="150" y1="110" x2="120" y2="140" />
+                        <line   class="hangman-part" data-part="3" x1="150" y1="110" x2="180" y2="140" />
+                        <line   class="hangman-part" data-part="4" x1="150" y1="160" x2="125" y2="200" />
+                        <line   class="hangman-part" data-part="5" x1="150" y1="160" x2="175" y2="200" />
+                    </svg>
                 </div>
             </div>
-        </div>
-        <!-- All the word fields -->
-        <div id="wordFields">
-            <div id="inputFields"></div>
-            <div id="alphabeticButtons"></div>
-        </div>
-    </div>
 
-    <!-- Modal when you won -->
-    <div id="winningModal" class="modal">
-        <!-- Modal content -->
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="close">&times;</span>
-                <h2 id="word1"></h2>
-                <img src="images/you_have_won.png" alt="">
+            <!-- Game panel card -->
+            <div class="lg:col-span-3 rounded-2xl bg-slate-900/60 backdrop-blur border border-slate-800 p-6 flex flex-col gap-6">
+                <!-- Stats row -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    <div class="rounded-xl bg-slate-800/50 border border-slate-700/80 p-4">
+                        <div class="text-xs uppercase tracking-wider text-slate-400">Word Length</div>
+                        <div id="wordLengthStat" class="text-2xl font-bold text-slate-100 mt-1">—</div>
+                    </div>
+                    <div class="rounded-xl bg-slate-800/50 border border-slate-700/80 p-4">
+                        <div class="text-xs uppercase tracking-wider text-slate-400">Wrong Guesses</div>
+                        <div id="wrongCountStat" class="text-2xl font-bold text-slate-100 mt-1">0<span class="text-slate-500 text-base font-normal"> / 6</span></div>
+                    </div>
+                    <div class="rounded-xl bg-slate-800/50 border border-slate-700/80 p-4 col-span-2 sm:col-span-1">
+                        <div class="text-xs uppercase tracking-wider text-slate-400">Wrong Letters</div>
+                        <div id="wrongLettersStat" class="text-lg font-mono font-semibold text-rose-400 mt-1 min-h-[1.75rem] tracking-widest">—</div>
+                    </div>
+                </div>
+
+                <!-- Word display -->
+                <div>
+                    <div class="text-xs uppercase tracking-wider text-slate-400 mb-3">The Word</div>
+                    <div id="wordDisplay" class="flex flex-wrap gap-2 sm:gap-3 justify-center py-4 min-h-[5rem]"></div>
+                </div>
+
+                <!-- Keyboard -->
+                <div>
+                    <div class="text-xs uppercase tracking-wider text-slate-400 mb-3">Keyboard <span class="text-slate-600 normal-case tracking-normal">— click or use your physical keyboard</span></div>
+                    <div id="keyboard" class="grid grid-cols-7 sm:grid-cols-9 gap-2"></div>
+                </div>
             </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="mt-8 text-center text-xs text-slate-500">
+            Words fetched from a public API. No letters are stored — refresh freely.
+        </footer>
+    </main>
+
+    <!-- Result overlay -->
+    <div id="overlay" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4">
+        <div id="overlayCard" class="fade-in w-full max-w-md rounded-2xl border bg-slate-900 p-8 shadow-2xl text-center">
+            <div id="overlayIcon" class="mx-auto w-16 h-16 rounded-full flex items-center justify-center mb-4"></div>
+            <h2 id="overlayTitle" class="text-2xl font-bold mb-2"></h2>
+            <p id="overlayMessage" class="text-slate-400 mb-1"></p>
+            <p class="text-slate-300 mb-6">The word was <span id="overlayWord" class="font-mono font-bold text-white"></span></p>
+            <button id="overlayPlayAgain" type="button"
+                class="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg bg-brand-600 hover:bg-brand-500 text-white font-semibold transition shadow-glow">
+                Play Again
+                <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+                </svg>
+            </button>
         </div>
     </div>
-
-    <!-- Modal when you lost -->
-    <div id="lostModal" class="modal">
-        <!-- Modal content -->
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="close">&times;</span>
-                <h2 id="word2"></h2>
-                <img src="images/you_have_lost.png" alt="">
-            </div>
-        </div>
-    </div>
-
-    <input type="submit" id="playagain" value="Play again!">
 
     <script src="js/main.js"></script>
 </body>
