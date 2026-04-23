@@ -17,8 +17,8 @@ const FALLBACK_WORDS = [
 // Datamuse returns many dictionary words for a given letter-length pattern.
 // We request a pool of words and pick one at random client-side.
 const WORD_LENGTHS = [5, 6, 7, 8];
-const DATAMUSE_URL = length =>
-    `https://api.datamuse.com/words?sp=${'?'.repeat(length)}&max=1000`;
+const DATAMUSE_URL = length => 
+    `https://api.datamuse.com/words?sp=${'?'.repeat(length)}&v=de&max=1000`;
 
 // ---------- Game state ----------
 const state = {
