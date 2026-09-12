@@ -1,22 +1,28 @@
-# Hangyman made with JavaScript
-Ein Hangman Spiel bassierend zu meinem Spiel, welches ich mit Discord.py gemacht habe.
+# Hangyman (JavaScript)
 
-## Vorgekommene Fehler und gute Links
-Issue 1: How to detect which button has been clicked in JavaScript<br>
-https://www.fwait.com/how-to-detect-which-button-is-clicked-in-javascript/
+A browser-based Hangman word-guessing game written in plain HTML, CSS and vanilla
+JavaScript — a web remake of an earlier Discord.py version. Guess the hidden word
+letter by letter before the drawing is completed.
 
-Issue 2: How to add readonly attribute to an input tag in JavaScript?<br>
-https://www.geeksforgeeks.org/how-to-add-readonly-attribute-to-an-input-tag-in-javascript/#:~:text=Use%20setAttribute()%20Method%20to,is%20being%20set%20or%20changed.
+## Features
 
-Issue 3: Javascript - strikethrough<br>
-https://stackoverflow.com/questions/9375445/javascript-strikethrough
+- On-screen keyboard: click letters to guess; used letters are disabled.
+- Six wrong guesses allowed, with an SVG hangman figure drawn step by step.
+- Words are fetched from the [Datamuse API](https://www.datamuse.com/api/) for fresh
+  rounds, with a built-in offline word list as a fallback if the API is unreachable.
+- Win / loss state and the ability to start a new round.
 
-Issue 4: How do I disable all input buttons without using jQuery?<br>
-https://stackoverflow.com/questions/1202087/how-do-i-disable-all-input-buttons-without-using-jquery
+## Tech
 
-Issue 5: Array.prototype.includes() - Check if array contains a specific text
-https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes
+- HTML, CSS, vanilla JavaScript (no framework, no build step)
+- Datamuse API for word generation
 
-## Quick Information!
-The image of the body from the left side was taken from there<br>
-https://codepen.io/worodhazam/pen/XWzxONq
+## Run
+
+Open `index.html` directly in a browser, or serve the folder:
+
+```bash
+python -m http.server
+```
+
+Then open http://localhost:8000.
